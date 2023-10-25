@@ -377,7 +377,7 @@ SerializerMonitor::Ptr
 SerializerMonitorStdv5::create()
 {
     SerializerCommon::Creator cre_common;
-    if ( ! SerializerCommon::factory().getCreator( cre_common, 18 ) )
+    if ( ! SerializerCommon::factory().getCreator( cre_common, 19 ) )
     {
         return SerializerMonitor::Ptr();
     }
