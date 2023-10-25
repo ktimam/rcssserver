@@ -288,7 +288,7 @@ protected:
           return rad2Deg( rad_dir );
       }
 
-private:
+    private:
 
     double calcLineRadDir( const double & line_normal ) const
       {
@@ -683,6 +683,65 @@ protected:
                                     const double q_step );
 };
 
+
+/*!
+//===================================================================
+//
+//  CLASS: VisualSensorPlayerV19
+//
+//  DESC: Class for the version 18 visual protocol.  This version
+//        introduced the focus point.
+//
+//===================================================================
+*/
+
+class VisualSenderPlayerV19
+    : public VisualSenderPlayerV18 {
+public:
+    VisualSenderPlayerV19( const Params & params );
+
+    virtual
+    ~VisualSenderPlayerV19();
+
+protected:
+
+    virtual
+    void sendHighFlag( const PObject & flag ) override;
+
+    virtual
+    void sendHighBall( const MPObject & ball ) override;
+
+    virtual
+    void sendHighPlayer( const Player & player ) override;
+
+    virtual
+    double calcGaussianDist( const double actual_dist,
+                             const double focus_dist,
+                             const double noise_rate,
+                             const double focus_noise_rate );
+
+    virtual
+    double calcGaussianChangeDist( const double actual_dist_change,
+                                   const double actual_dist,
+                                   const double focus_actual_dist,
+                                   const double noise_rate,
+                                   const double focus_noise_rate) const;
+
+    virtual
+    double calcGaussianChangeDir( const double actual_dir_change,
+                                  const double actual_dist,
+                                  const double focus_actual_dist,
+                                  const double noise_rate,
+                                  const double focus_noise_rate) const;
+
+    virtual
+    void calcGaussianVel( const PVector & obj_vel,
+                          const PVector & obj_pos,
+                          const double & actual_dist,
+                          const double & focus_dist,
+                          double & dist_chg,
+                          double & dir_chg ) const;
+};
 }
 
 #endif
