@@ -92,9 +92,9 @@ public:
 
     // static
     // void doAnalyse( Referee * ref )
-    //   {
+      //   {
     //       ref->analyse();
-    //   }
+      //   }
 
     //
     //
@@ -102,126 +102,126 @@ public:
 
     // class doKickTaken {
     // private:
-    //     const Player & M_kicker;
+        //     const Player & M_kicker;
     //     const double M_accel_r;
     // public:
-    //     doKickTaken( const Player & kicker,
+        //     doKickTaken( const Player & kicker,
     //                  const double accel_r )
-    //         : M_kicker( kicker ),
+            //         : M_kicker( kicker ),
     //           M_accel_r( accel_r )
     //       { }
 
-    //     void operator()( Referee * ref )
-    //       {
+        //     void operator()( Referee * ref )
+          //       {
     //           ref->kickTaken( M_kicker, M_accel_r );
-    //       }
+          //       }
     // };
 
     // class doFailedKickTaken {
     // private:
-    //     const Player & M_kicker;
+        //     const Player & M_kicker;
     // public:
-    //     doFailedKickTaken( const Player & kicker )
-    //         : M_kicker( kicker )
-    //       { }
+        //     doFailedKickTaken( const Player & kicker )
+            //         : M_kicker( kicker )
+          //       { }
 
-    //     void operator()( Referee * ref )
-    //       {
+        //     void operator()( Referee * ref )
+          //       {
     //           ref->failedKickTaken( M_kicker );
-    //       }
+          //       }
     // };
 
     // class doTackleTaken {
     // private:
-    //     const Player & M_tackler;
-    //     const double M_accel_r;
+        //     const Player & M_tackler;
+        //     const double M_accel_r;
     //     const bool M_foul;
     // public:
-    //     doTackleTaken( const Player & tackler,
-    //                    const double accel_r,
+        //     doTackleTaken( const Player & tackler,
+                       //                    const double accel_r,
     //                    const bool foul )
-    //         : M_tackler( tackler ),
-    //           M_accel_r( accel_r ),
+            //         : M_tackler( tackler ),
+              //           M_accel_r( accel_r ),
     //           M_foul( foul )
-    //       { }
+          //       { }
 
-    //     void operator()( Referee * ref )
-    //       {
+        //     void operator()( Referee * ref )
+          //       {
     //           ref->tackleTaken( M_tackler, M_accel_r, M_foul );
-    //       }
+          //       }
     // };
 
     // class doFailedTackleTaken {
     // private:
-    //     const Player & M_tackler;
-    //     const bool M_foul;
+        //     const Player & M_tackler;
+        //     const bool M_foul;
     // public:
-    //     doFailedTackleTaken( const Player & tackler,
-    //                          const bool foul )
-    //         : M_tackler( tackler ),
-    //           M_foul( foul )
-    //       { }
+        //     doFailedTackleTaken( const Player & tackler,
+                             //                          const bool foul )
+            //         : M_tackler( tackler ),
+              //           M_foul( foul )
+          //       { }
 
-    //     void operator()( Referee * ref )
-    //       {
+        //     void operator()( Referee * ref )
+          //       {
     //           ref->failedTackleTaken( M_tackler, M_foul );
-    //       }
+          //       }
     // };
 
     // class doCaughtBall {
     // private:
-    //     const Player & M_catcher;
+        //     const Player & M_catcher;
     // public:
-    //     doCaughtBall( const Player & catcher )
-    //         : M_catcher( catcher )
-    //       { }
+        //     doCaughtBall( const Player & catcher )
+            //         : M_catcher( catcher )
+          //       { }
 
-    //     void operator()( Referee * ref )
-    //       {
+        //     void operator()( Referee * ref )
+          //       {
     //           ref->ballCaught( M_catcher );
-    //       }
+          //       }
     // };
 
     // class doPunchedBall {
     // private:
-    //     const Player & M_goalie;
+        //     const Player & M_goalie;
     // public:
-    //     doPunchedBall( const Player & goalie )
-    //         : M_goalie( goalie )
-    //       { }
+        //     doPunchedBall( const Player & goalie )
+            //         : M_goalie( goalie )
+          //       { }
 
-    //     void operator()( Referee * ref )
-    //       {
+        //     void operator()( Referee * ref )
+          //       {
     //           ref->ballPunched( M_goalie );
-    //       }
+          //       }
     // };
 
     // class doPlayModeChange {
     // private:
-    //     PlayMode M_pm;
+        //     PlayMode M_pm;
     // public:
-    //     doPlayModeChange( PlayMode pm )
-    //         : M_pm( pm )
-    //       { }
+        //     doPlayModeChange( PlayMode pm )
+            //         : M_pm( pm )
+          //       { }
 
-    //     void operator()( Referee * ref )
-    //       {
+        //     void operator()( Referee * ref )
+          //       {
     //           ref->playModeChange( M_pm );
-    //       }
+          //       }
     // };
 
     // class doBallTouched {
     // private:
-    //     const Player & M_player;
+        //     const Player & M_player;
     // public:
-    //     doBallTouched( const Player & player )
-    //         : M_player( player )
-    //       { }
+        //     doBallTouched( const Player & player )
+            //         : M_player( player )
+          //       { }
 
-    //     void operator()( Referee * ref )
-    //       {
+        //     void operator()( Referee * ref )
+          //       {
     //           ref->ballTouched( M_player );
-    //       }
+          //       }
     // };
 
 
@@ -320,7 +320,7 @@ public:
 
     void analyse();
 
-    void playModeChange( PlayMode )
+void playModeChange( PlayMode )
       { }
 };
 
@@ -396,7 +396,7 @@ private:
 
     int M_last_kick_time;
     int M_last_kick_stoppage_time;
-    double M_last_kick_accel_r;
+double M_last_kick_accel_r;
     Side M_last_kicker_side;
     std::vector< Candidate > M_offside_candidates;
 
@@ -409,18 +409,18 @@ public:
         : Referee( stadium ),
           M_last_kick_time( -1 ),
           M_last_kick_stoppage_time( -1 ),
-          M_last_kick_accel_r( 0.0 ),
+M_last_kick_accel_r( 0.0 ),
           M_last_kicker_side( NEUTRAL ),
           M_offside_pos(),
           M_after_offside_time( 0 )
       { }
 
-    void kickTaken( const Player & kicker,
+void kickTaken( const Player & kicker,
                     const double accel_r ) override;
 
     void failedKickTaken( const Player & kicker ) override;
 
-    void tackleTaken( const Player & tackler,
+        void tackleTaken( const Player & tackler,
                       const double accel_r,
                       const bool foul ) override;
 
@@ -590,7 +590,7 @@ private:
     static const int AFTER_GOAL_WAIT;
 
     const Player * M_last_touched;
-    int M_last_touched_time;
+int M_last_touched_time;
     double M_last_touched_accel_r;
 
     const Player * M_last_indirect_kicker;
@@ -621,7 +621,7 @@ public:
     void failedKickTaken( const Player & ) override
       { }
 
-    void tackleTaken( const Player & kicker,
+        void tackleTaken( const Player & kicker,
                       const double accel_r,
                       const bool foul ) override;
 
@@ -675,7 +675,7 @@ private:
     };
 
     int M_last_back_passer_time;
-    double M_last_back_passer_accel_r;
+double M_last_back_passer_accel_r;
     const Player * M_last_back_passer;
     const Player * M_before_last_back_passer;
 
@@ -852,6 +852,78 @@ private:
 
 /*--------------------------------------------------------*/
 
+class HFORef
+    : public Referee {
+private:
+    static const char * oobMsg;
+    static const char * capturedMsg;
+    static const char * goalMsg;
+    static const char * ootMsg;
+    static const char * doneMsg;
+    static const char * inGameMsg;
+    static const int TURNOVER_TIME;
+    int M_episode;
+    int M_offense, M_defense;
+    int M_time;
+    int M_take_time;
+    int M_holder_unum;
+    char M_holder_side; // 'L' = left, 'R' = Right, 'U' = Unknown/Neutral
+    PVector M_prev_ball_pos;
+    int M_untouched_time;
+    int M_episode_over_time;
+    //boost::mt19937 M_rng;
+    std::vector<std::pair<int,int> > M_offsets;
+
+public:
+    HFORef( Stadium & stadium );
+
+    virtual
+    ~HFORef()
+      { }
+
+    void kickTaken( const Player &,
+                    const double ) override
+      { }
+
+    void failedKickTaken( const Player & ) override
+      { }
+
+    void tackleTaken( const Player &,
+                      const double,
+                      const bool ) override
+      { }
+
+    void failedTackleTaken( const Player &,
+                            const bool ) override
+      { }
+
+    void ballCaught( const Player & ) override
+      { }
+
+    void ballPunched( const Player & ) override
+      { }
+
+    void ballTouched( const Player & ) override
+      { }
+      
+    virtual
+    void analyse();
+
+    virtual
+    void playModeChange( PlayMode pm );
+
+private:
+    bool inHFOArea(const PVector& pos);
+
+    void logHeader();
+
+    void logEpisode( const char *endCond );
+
+    void resetField();
+};
+
+/*--------------------------------------------------------*/
+
 class PenaltyRef
     : public Referee {
 private:
@@ -881,7 +953,7 @@ public:
     void failedKickTaken( const Player & ) override
       { }
 
-    void tackleTaken( const Player & tackler,
+        void tackleTaken( const Player & tackler,
                       const double accel_r,
                       const bool foul ) override;
 
@@ -893,7 +965,7 @@ public:
 
     void ballPunched( const Player & catcher ) override;
 
-    void ballTouched( const Player & ) override
+void ballTouched( const Player & ) override
       { }
 
     void analyse() override;

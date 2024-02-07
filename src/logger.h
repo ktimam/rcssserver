@@ -65,14 +65,18 @@ private:
 
     bool openGameLog( const Stadium & stadium );
     bool openTextLog();
-    bool openKawayLog();
+    bool openKawayLog();    
+    bool openHFOLog();
 
     void renameLogs( const Stadium & stadium );
     void closeGameLog();
     void closeTextLog();
     void closeKawayLog();
+    void closeHFOLog();
 
 public:
+
+    std::ostream & hfoLog();
 
     void flush();
 

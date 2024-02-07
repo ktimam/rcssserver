@@ -254,6 +254,12 @@ private:
     static const int KAWAY_LOG_FIXED;
     static const int KAWAY_LOG_DATED;
 
+    static const int HFO_LOGGING;
+    static const std::string HFO_LOG_DIR;
+    static const std::string HFO_LOG_FIXED_NAME;
+    static const int HFO_LOG_FIXED;
+    static const int HFO_LOG_DATED;
+
     static const int KAWAY_START;
 
     static const int POINT_TO_BAN;
@@ -336,7 +342,7 @@ private:
     static const bool GOLDEN_GOAL;
     // 15.0.0
     static const double RED_CARD_PROBABILITY;
-    // 16.0.0
+// 16.0.0
     static const int ILLEGAL_DEFENSE_DURATION;
     static const int ILLEGAL_DEFENSE_NUMBER;
     static const double ILLEGAL_DEFENSE_DIST_X;
@@ -419,6 +425,16 @@ private:
     double M_keepaway_width; /* keepaway region width */
     double M_corner_kick_margin; /* corner kick margin */
     double M_offside_active_area_size; /* offside active area size */
+    bool M_hfo; /* HFO mode on/off */
+    int M_hfo_max_trial_time; /* Max time an HFO trial can last */
+    int M_hfo_max_untouched_time; /* Max time ball can go untouched in HFO */
+    int M_hfo_max_trials; /* Quit after this many HFO trials */
+    int M_hfo_max_frames; /* Quit after this many HFO frames */
+    int M_hfo_offense_on_ball; /* Give the ball to an offensive player */
+    double M_hfo_min_ball_pos_x; /* Governs the initialization x-position of ball */
+    double M_hfo_max_ball_pos_x; /* Governs the initialization x-position of ball */
+    double M_hfo_min_ball_pos_y; /* Governs the initialization y-position of ball */
+    double M_hfo_max_ball_pos_y; /* Governs the initialization y-position of ball */
     int M_port; /* port number */
     int M_coach_port; /* coach port number */
     int M_olcoach_port; /* online coach port number */
@@ -532,6 +548,12 @@ private:
     std::string M_keepaway_log_fixed_name;
     bool M_keepaway_log_fixed;
     bool M_keepaway_log_dated;
+
+    bool M_hfo_logging;
+    std::string M_hfo_log_dir;
+    std::string M_hfo_log_fixed_name;
+    bool M_hfo_log_fixed;
+    bool M_hfo_log_dated;
 
     int M_keepaway_start;
 
@@ -657,6 +679,7 @@ private:
     void setTextLogDir( std::string str );
     void setGameLogDir( std::string str );
     void setKAwayLogDir( std::string str );
+    void setHFOLogDir( std::string str );
 
     void setCoachMsgFile( std::string str );
 
@@ -763,6 +786,17 @@ public:
     bool keepAwayMode() const { return M_keepaway; }
     double keepAwayLength() const { return M_keepaway_length; }
     double keepAwayWidth() const { return M_keepaway_width; }
+
+    bool hfoMode() const { return M_hfo; }
+    int hfoMaxTrialTime() const { return M_hfo_max_trial_time; }
+    int hfoMaxUntouchedTime() const { return M_hfo_max_untouched_time; }
+    int hfoMaxTrials() const { return M_hfo_max_trials; }
+    int hfoMaxFrames() const { return M_hfo_max_frames; }
+    int hfoOffenseOnBall() const { return M_hfo_offense_on_ball; }
+    double hfoMinBallX() const { return M_hfo_min_ball_pos_x; }
+    double hfoMaxBallX() const { return M_hfo_max_ball_pos_x; }
+    double hfoMinBallY() const { return M_hfo_min_ball_pos_y; }
+    double hfoMaxBallY() const { return M_hfo_max_ball_pos_y; }
 
     double cornerKickMargin() const { return M_corner_kick_margin; }
     double offsideActiveArea() const { return M_offside_active_area_size; }
@@ -892,6 +926,12 @@ public:
     const std::string & kawayLogFixedName() const { return M_keepaway_log_fixed_name; }
     bool kawayLogFixed() const { return M_keepaway_log_fixed; }
     bool kawayLogDated() const { return M_keepaway_log_dated; }
+
+    bool hfoLogging() const { return M_hfo_logging; }
+    const std::string & hfoLogDir() const { return M_hfo_log_dir; }
+    const std::string & hfoLogFixedName() const { return M_hfo_log_fixed_name; }
+    bool hfoLogFixed() const { return M_hfo_log_fixed; }
+    bool hfoLogDated() const { return M_hfo_log_dated; }
 
     int kawayStart() const { return M_keepaway_start; }
 

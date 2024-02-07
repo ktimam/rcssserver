@@ -54,6 +54,8 @@ const std::string DEF_GAME_NAME = "incomplete";
 const std::string DEF_GAME_SUFFIX = ".rcg";
 const std::string DEF_KAWAY_NAME = "incomplete";
 const std::string DEF_KAWAY_SUFFIX = ".kwy";
+const std::string DEF_HFO_NAME = "incomplete";
+const std::string DEF_HFO_SUFFIX = ".hfo";
 }
 
 struct Logger::Impl {
@@ -64,10 +66,12 @@ struct Logger::Impl {
     std::string game_log_filepath_;
     std::string text_log_filepath_;
     std::string kaway_log_filepath_;
+    std::string M_hfo_log_name;
 
     std::ostream * game_log_;
     std::ostream * text_log_;
     std::ofstream kaway_log_;  //!< file for keepaway log
+    std::ofstream M_hfo_log;  //!< file for hfo log
 
 
     Impl()
@@ -84,6 +88,7 @@ struct Logger::Impl {
         if ( game_log_ ) game_log_->flush();
         if ( text_log_ ) text_log_->flush();
         kaway_log_.flush();
+        M_hfo_log.flush();
     }
 
     void closeGameLog()
@@ -117,6 +122,15 @@ struct Logger::Impl {
         }
     }
 
+    void closeHFOLog()
+    {
+        if ( M_hfo_log.is_open() )
+        {
+            M_hfo_log.flush();
+            M_hfo_log.close();
+        }
+    }
+
     bool isGameLogOpen() const
     {
         return ( game_log_
@@ -132,6 +146,11 @@ struct Logger::Impl {
     bool isKeepawayLogOpen() const
     {
         return kaway_log_.is_open();
+    }
+    
+    bool isHFOLogOpen() const
+    {
+        return M_hfo_log.is_open();
     }
 };
 
@@ -150,8 +169,14 @@ Logger::Logger()
 
 Logger::~Logger()
 {
-
+    
 }
+
+std::ostream & Logger::hfoLog()
+{
+    return M_impl->M_hfo_log;
+}
+
 
 bool
 Logger::setSenders( const Stadium & stadium )
@@ -238,11 +263,19 @@ Logger::open( const Stadium & stadium )
          && ServerParam::instance().kawayLogging() )
     {
         if ( ! openKawayLog() )
-        {
-            return false;
-        }
+              {
+        return false;
+      }
     }
 
+    if ( ServerParam::instance().hfoMode()
+         && ServerParam::instance().hfoLogging() )
+    {
+      if ( ! openHFOLog() )
+      {
+        return false;
+      }
+    }
     return true;
 }
 
@@ -466,6 +499,55 @@ Logger::openKawayLog()
     return true;
 }
 
+bool
+Logger::openHFOLog()
+{
+    // create the log directory & file path string
+    try
+    {
+        std::filesystem::path hfo_log( ServerParam::instance().hfoLogDir());        
+        if ( ! std::filesystem::exists( hfo_log )
+             && ! std::filesystem::create_directories( hfo_log ) )
+        {
+            std::cerr << __FILE__ << ": " << __LINE__
+                      << ": can't create keepaway log directory " << hfo_log << std::endl;
+            return false;
+        }
+
+        if ( ServerParam::instance().hfoLogFixed() )
+        {
+            hfo_log /= ServerParam::instance().hfoLogFixedName() + DEF_HFO_SUFFIX;
+        }
+        else
+        {
+            hfo_log /= DEF_HFO_NAME + DEF_HFO_SUFFIX;
+        }
+
+        M_impl->M_hfo_log_name = hfo_log.string();
+    }
+    catch ( std::exception & e )
+    {
+        std::cerr << __FILE__ << ": " << __LINE__
+                  << " Exception caught! " << e.what()
+                  << "\nCould not create keepaway log directory '"
+                  << ServerParam::instance().hfoLogDir()
+                  << "'" << std::endl;
+        return false;
+    }
+
+    // open the output file stream
+    M_impl->M_hfo_log.open( M_impl->M_hfo_log_name.c_str() );
+
+    if ( ! M_impl->isHFOLogOpen() )
+    {
+        std::cerr << __FILE__ << ": " << __LINE__
+                  << ": can't open keepaway_log_file " << M_impl->M_hfo_log_name
+                  << std::endl;
+        return false;
+    }
+
+    return true;
+}
 
 void
 Logger::closeGameLog()
@@ -483,6 +565,12 @@ void
 Logger::closeKawayLog()
 {
     M_impl->closeKeepawayLog();
+}
+
+void
+Logger::closeHFOLog()
+{
+    M_impl->closeHFOLog();
 }
 
 void
@@ -507,7 +595,7 @@ Logger::renameLogs( const Stadium & stadium )
                               && stadium.teamRight().penaltyTaken() > 0 );
 
     char time_str[32];
-    const std::time_t time = stadium.getStartTime();
+const std::time_t time = stadium.getStartTime();
     const std::tm * lt = std::localtime( &time );
     std::strftime( time_str, 32,
                    ServerParam::instance().logDateFormat().c_str(),
@@ -566,7 +654,7 @@ Logger::renameLogs( const Stadium & stadium )
     if ( M_impl->isGameLogOpen() )
     {
         char time_stamp[32];
-        const std::time_t time = stadium.getStartTime();
+const std::time_t time = stadium.getStartTime();
         const struct tm * lt = std::localtime( &time );
         std::strftime( time_stamp, 32,
                        "%Y%m%d%H%M",
@@ -674,12 +762,12 @@ Logger::renameLogs( const Stadium & stadium )
 
 // void
 // Logger::writeToGameLog( const char * str,
-//                         const std::streamsize n )
+                        //                         const std::streamsize n )
 // {
 //     if ( M_impl->game_log_ )
-//     {
+    //     {
 //         M_impl->game_log_->write( str, n );
-//     }
+    //     }
 // }
 
 void
@@ -1243,8 +1331,8 @@ Logger::writeTextLog( const Stadium & stadium,
         if ( M_impl->isTextLogOpen() )
         {
             *M_impl->text_log_ << stadium.time()
-                               << ',' << stadium.stoppageTime()
-                               << "\t" << message << '\n';
+                        << ',' << stadium.stoppageTime()
+                        << "\t" << message << '\n';
         }
     }
 
@@ -1494,8 +1582,8 @@ Logger::writeTimes( const Stadium & stadium,
         const double diff = nano_diff.count() * 0.001 * 0.001;
 
         *M_impl->text_log_ << stadium.time()
-                           << ',' << stadium.stoppageTime()
-                           << "\tCYCLE_TIMES: " << diff << '\n';
+                    << ',' << stadium.stoppageTime()
+                    << "\tCYCLE_TIMES: " << diff << '\n';
     }
 }
 
@@ -1512,7 +1600,7 @@ Logger::writeProfile( const Stadium & stadium,
         const double diff = nano_diff.count() * 0.001 * 0.001;
 
         *M_impl->text_log_ << stadium.time()
-                           << ',' << stadium.stoppageTime()
-                           << "\t" << str << ": " << diff << '\n';
+                    << ',' << stadium.stoppageTime()
+                    << "\t" << str << ": " << diff << '\n';
     }
 }

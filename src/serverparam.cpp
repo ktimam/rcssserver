@@ -274,6 +274,16 @@ const std::string ServerParam::KAWAY_LOG_FIXED_NAME = "rcssserver";
 const int ServerParam::KAWAY_LOG_FIXED = false;
 const int ServerParam::KAWAY_LOG_DATED = true;
 
+const int ServerParam::HFO_LOGGING = true;
+#ifdef RCSS_WIN
+const std::string ServerParam::HFO_LOG_DIR = ".\\";
+#else
+const std::string ServerParam::HFO_LOG_DIR = "./";
+#endif
+const std::string ServerParam::HFO_LOG_FIXED_NAME = "rcssserver";
+const int ServerParam::HFO_LOG_FIXED = false;
+const int ServerParam::HFO_LOG_DATED = true;
+
 const int ServerParam::KAWAY_START = -1;
 
 const int ServerParam::POINT_TO_BAN = 5;
@@ -853,6 +863,25 @@ ServerParam::addParams()
 
     addParam( "keepaway_start", M_keepaway_start, "", 9 );
 
+    addParam( "hfo", M_hfo, "", 9 );
+    addParam( "hfo_max_trial_time", M_hfo_max_trial_time, "", 9 );
+    addParam( "hfo_max_untouched_time", M_hfo_max_untouched_time, "", 9 );
+    addParam( "hfo_logging", M_hfo_logging, "", 9 );
+    addParam( "hfo_log_dir",
+              rcss::conf::makeSetter( this, &ServerParam::setHFOLogDir ),
+              rcss::conf::makeGetter( M_hfo_log_dir ),
+              "", 9 );
+    addParam( "hfo_log_fixed_name", M_hfo_log_fixed_name, "", 9 );
+    addParam( "hfo_log_fixed", M_hfo_log_fixed, "", 9 );
+    addParam( "hfo_log_dated", M_hfo_log_dated, "", 9 );
+    addParam( "hfo_max_trials", M_hfo_max_trials, "", 9 );
+    addParam( "hfo_max_frames", M_hfo_max_frames, "", 9 );
+    addParam( "hfo_offense_on_ball", M_hfo_offense_on_ball, "", 9 );
+    addParam( "hfo_min_ball_pos_x", M_hfo_min_ball_pos_x, "", 9 );
+    addParam( "hfo_max_ball_pos_x", M_hfo_max_ball_pos_x, "", 9 );
+    addParam( "hfo_min_ball_pos_y", M_hfo_min_ball_pos_y, "", 9 );
+    addParam( "hfo_max_ball_pos_y", M_hfo_max_ball_pos_y, "", 9 );
+
     addParam( "nr_normal_halfs",
               rcss::conf::makeSetter( this, &ServerParam::setNrNormalHalfs ),
               rcss::conf::makeGetter( M_nr_normal_halfs ),
@@ -928,7 +957,7 @@ ServerParam::addParams()
               rcss::conf::makeGetter( M_red_card_probability ),
               "", 15 );
 
-    // v16
+// v16
     addParam( "illegal_defense_duration", M_illegal_defense_duration, "", 16);
     addParam( "illegal_defense_number", M_illegal_defense_number, "if be 0, illegal defense rule will be disable", 16);
     addParam( "illegal_defense_dist_x", M_illegal_defense_dist_x, "", 16);
@@ -1120,6 +1149,12 @@ ServerParam::setKAwayLogDir( std::string str )
 }
 
 void
+ServerParam::setHFOLogDir( std::string str )
+{
+    M_hfo_log_dir = tildeExpand( str );
+}
+
+void
 ServerParam::setCoachMsgFile( std::string str )
 {
     M_coach_msg_file = tildeExpand( str );
@@ -1250,6 +1285,13 @@ ServerParam::setDefaults()
     M_keepaway_length = KEEPAWAY_LENGTH;
     M_keepaway_width = KEEPAWAY_WIDTH;
 
+    M_hfo = false;
+    M_hfo_max_trial_time = 1000;
+    M_hfo_max_untouched_time = 100;
+    M_hfo_max_trials = -1;
+    M_hfo_max_frames = -1;
+    M_hfo_offense_on_ball = false;
+
     M_corner_kick_margin = CORNER_KICK_MARGIN;
     M_offside_active_area_size = OFFSIDE_ACTIVE_AREA_SIZE;
 
@@ -1367,6 +1409,12 @@ ServerParam::setDefaults()
     M_keepaway_log_fixed_name = KAWAY_LOG_FIXED_NAME;
     M_keepaway_log_fixed = KAWAY_LOG_FIXED;
     M_keepaway_log_dated = KAWAY_LOG_DATED;
+
+    M_hfo_logging = HFO_LOGGING;
+    M_hfo_log_dir = HFO_LOG_DIR;
+    M_hfo_log_fixed_name = HFO_LOG_FIXED_NAME;
+    M_hfo_log_fixed = HFO_LOG_FIXED;
+    M_hfo_log_dated = HFO_LOG_DATED;
 
     M_keepaway_start = KAWAY_START;
 

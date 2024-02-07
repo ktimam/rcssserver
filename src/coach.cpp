@@ -41,6 +41,8 @@
 #include <rcss/clang/clangmsg.h>
 #include <rcss/clang/clangmsgbuilder.h>
 
+#include <boost/lexical_cast.hpp>
+
 #include <iostream>
 #include <sstream>
 #include <cstdio>
@@ -342,6 +344,23 @@ Coach::parse_command( const char * command )
 
         return;
     }
+    else if ( ! std::strcmp( com, "disconnect_player" ) )
+    {
+        char name[128];
+        int unum;
+
+        if ( std::sscanf( command, " ( disconnect_player %127s %d ) ",
+                          name, &unum ) == 2 )
+        {
+            disconnect_player( name, unum );
+        }
+        else
+        {
+            send( "(error illegal_command_form)" );
+        }
+
+        return;
+    }
     //pfr:SYNCH
     else if ( ! std::strcmp( com, "done" ) )
     {
@@ -410,7 +429,7 @@ Coach::sendExternalMsg()
     }
 
     std::string msg = "(include ";
-    msg += std::to_string( buf.size() );
+    msg += boost::lexical_cast< std::string >( buf.size() );
     msg += ' ';
     msg.append( buf.begin(), buf.end() );
     msg += ')';
@@ -948,7 +967,45 @@ Coach::check_ball()
     send( ost.str().c_str() );
 }
 
+void
+Coach::disconnect_player( const std::string & team_name, int unum )
+{
+    const Team * team = NULL;
+    if ( M_stadium.teamLeft().name() == team_name )
+    {
+        team = &( M_stadium.teamLeft() );
+    }
 
+    if ( M_stadium.teamRight().name() == team_name )
+    {
+        team = &( M_stadium.teamRight() );
+    }
+
+    if ( team == NULL )
+    {
+        send( "(warning no_team_found)" );
+        return;
+    }
+
+    const Player * player = NULL;
+    for ( int i = 0; i < team->size(); ++i )
+    {
+        const Player * p = team->player( i );
+        if ( p && p->unum() == unum )
+        {
+            player = p;
+            break;
+        }
+    }
+
+    if ( player == NULL )
+    {
+        send( "(warning no_such_player)" );
+        return;
+    }
+
+    M_stadium.discardPlayer(player->side(), player->unum());
+}
 
 OnlineCoach::OnlineCoach( Stadium & stadium,
                           Team & team )
@@ -970,7 +1027,7 @@ OnlineCoach::OnlineCoach( Stadium & stadium,
 
 OnlineCoach::~OnlineCoach()
 {
-    if ( M_init_observer_olcoach )
+        if ( M_init_observer_olcoach )
     {
         delete M_init_observer_olcoach;
         M_init_observer_olcoach = static_cast< rcss::InitObserverOnlineCoach * >( 0 );
@@ -1157,7 +1214,7 @@ OnlineCoach::parse_command( const char * command )
             catch ( std::exception & e )
             {
                 std::cerr << e.what() << std::endl;
-                send( "(error could_not_parse_say)" );
+                                send( "(error could_not_parse_say)" );
                 return;
             }
 
@@ -1300,10 +1357,10 @@ OnlineCoach::parse_command( const char * command )
                     M_message_queue.push_back( msg );
                     send( "(ok say)" );
                 }
-            }
+                            }
             else
             {
-                send( "(error could_not_parse_say)" );
+                                send( "(error could_not_parse_say)" );
             }
         }
         else
@@ -1471,7 +1528,7 @@ OnlineCoach::check_message_queue( int time )
             say( *msg );
 
             M_message_queue.pop_front();
-            ++messages_sent;
+                        ++messages_sent;
         }
         else
         {
